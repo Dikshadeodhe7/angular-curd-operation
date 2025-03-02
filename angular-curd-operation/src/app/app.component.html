@@ -2,54 +2,65 @@
     <div class="row">
       <h3>Employee Form</h3>
 
-      <form action="" [formGroup]="employeeForm" (ngSubmit)="addEmployee()">
-          <div class="form-control">
-            <label for="">Name</label>
-              <input type="text" placeholder="Name" formControlName="name">
-          </div>
+      <div class="col-12">
+        <form [formGroup]="employeeForm" (ngSubmit)="addEmployee()">
+            <div class="form-group pt-2">
+                <label for="name" class="col-sm-1">Name:</label>
+                <input type="text" formControlName="name" class="col-sm-2" placeholder="Enter Name">
+            </div>
+            <div class="form-group pt-2">
+                <label for="name" class="col-sm-1">Department:</label>
+                <input type="text" formControlName="department" class="col-sm-2" placeholder="Enter Department">
+            </div>
+            <div class="form-group pt-2">
+                <label for="name" class="col-sm-1">Salary:</label>
+                <input type="text" formControlName="salary" class="col-sm-2" placeholder="Enter Salary">
+            </div>
+            <div class="form-group pt-2">
+                <button type="submit" class="btn btn-success"> {{ editIndex === null ? 'Add': 'Update'  }} Employees </button>
+            </div>
+        </form>
+     </div>
 
-          <div class="form-control">
-            <label for="">Department</label>
-            <input type="text" placeholder="Position" formControlName="department">
-          </div>
+     <hr />
 
-          <div class="form-control">
-            <label for="">Salary</label>
-            <input type="text" placeholder="Salary" formControlName="salary">
-          </div>
+     <h3>Employee List</h3>
+     <div class="col-md-12">
+         <div class="col-6">
+             <input class="form-control search" type="text" [(ngModel)]="searchQuery" (input)="filterEmployees()" placeholder="Search employees..." >
+         </div>
+         <div class="col-6 total-emp">
+             <h3 class="text-right">Total Employees : {{ employeeList.length }}</h3>
+         </div>
 
-          <div>
-              <button type="submit">Add Employee</button>
-          </div>
-      </form>
-
-      <h3>Employee List</h3>
-      <input type="text" placeholder="Search...." [(ngModel)] = "searchQuery" (input)="filterEmployees()">
-      <table>
-          <thead>
-                <th>No</th>
-                <th>Name</th>
-                <th>Department</th>
-                <th>Salary</th>
-          </thead>
-
-          <tbody>
-              <tr *ngFor = "let emp of filteredEmployees; let i = index">
-                  <td>{{ i + 1}}</td>
-                  <td>{{ emp.name }}</td>
-                  <td> {{ emp.department }} </td>
-                  <td> {{ emp.salary }} </td>
-                  <td>
-                    <button (click)="editEmployee(i)">Edit</button>
-                    <button (click)="deleteEmployee(i)">Delete</button>
-                  </td>
-              </tr>
-              
-          </tbody>
-
-          <tfoot>
-
-          </tfoot>
-      </table>
-    </div>
+         <table class="table table-bordered">
+             <thead>
+                 <tr>
+                     <th>ID</th>
+                     <th>Name</th>
+                     <th>Department</th>
+                     <th>Salary</th>
+                     <th>Actions</th>
+                 </tr>
+             </thead>
+             <tbody *ngIf="employeeList && employeeList.length > 0">
+                 <tr *ngFor="let emp of filteredEmployees; let i = index">
+                     <td>{{ i + 1 }}</td>
+                     <td>{{ emp.name }}</td>
+                     <td>{{ emp.department }}</td>
+                     <td>{{ emp.salary }}</td>
+                     <td>
+                         <button class="btn btn-warning" (click)="editEmployee(i)">Edit</button>
+                         <button class="btn btn-danger" (click)="deleteEmployee(i)">Delete</button>
+                     </td>
+                 </tr>
+             </tbody>
+             <tfoot>
+                 <tr *ngIf="filteredEmployees.length === 0">
+                   <td colspan="5" class="no-results">No Results Found</td>
+                 </tr>
+             </tfoot>
+         </table>
+     </div>
+ </div>
 </div>

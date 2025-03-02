@@ -1,0 +1,77 @@
+.container-fluid {
+    margin:  1rem auto;
+    padding: 2rem;
+}
+
+form {
+    margin-bottom: 2rem;
+    border: 1px solid #ccc;
+    padding: 2rem;
+
+    label {
+        font-weight: bold;
+    }
+
+    input {
+        width: 100%;
+        padding: 0.5rem;
+        border: none;
+        border-bottom: 1px solid #ccc;
+        margin-bottom: 1rem;
+    }
+
+    input:focus {
+        outline: none;
+    }
+}
+
+button {
+    padding: 0.5rem 1rem;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;    
+    margin-right: 10px;
+}
+
+h3 {
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.search {
+    margin-bottom: 1rem;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    margin-bottom: 2rem;
+}
+  
+.pagination button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    margin: 0 5px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s;
+}
+  
+.pagination button:hover {
+    background-color: #0056b3;
+}
+  
+.pagination button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+.no-results {
+    text-align: center;
+    color: red;
+    font-weight: bold;
+    padding: 10px;
+}
