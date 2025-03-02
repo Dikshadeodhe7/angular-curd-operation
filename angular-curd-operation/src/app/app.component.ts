@@ -16,6 +16,8 @@ export class AppComponent implements OnInit {
       filteredEmployees: any[] = [];
       editIndex: number | null = null;
       searchQuery: string = '';
+      currentPage: number = 1;
+      itemsPerPage: number = 5;
 
       constructor(private fb: FormBuilder) {}
 
@@ -31,6 +33,7 @@ export class AppComponent implements OnInit {
 
       storeLocalStorage() {
           localStorage.setItem('employees', JSON.stringify(this.employeeList));
+          this.filterEmployees();
       }
 
       addEmployee() {
@@ -44,30 +47,59 @@ export class AppComponent implements OnInit {
              }  
           }
           //console.log(this.employeeList);
-          this.employeeForm.reset();
           this.storeLocalStorage();
+          this.employeeForm.reset();
+          
       }
 
       loadEmployeeList() {
           const data = localStorage.getItem('employees');
           this.employeeList =  data ? JSON.parse(data) : [];
-          this.filteredEmployees = [...this.employeeList];
+          this.currentPage = 1;
+          this.filterEmployees();
       }
 
       editEmployee(index: number) {
           this.editIndex = index;
-          this.employeeForm.patchValue(this.employeeList[index]);
+          this.employeeForm.patchValue(this.filteredEmployees[index]);
       }
 
       deleteEmployee(index: number) {
-          this.employeeList.splice(index, 1);
+          const actualindex = (this.currentPage - 1) * this.itemsPerPage + index;
+          this.employeeList.splice(actualindex, 1);
           this.storeLocalStorage();
+
+          // **Fix: Adjust Pagination If Needed**
+          const totalPages = Math.ceil(this.employeeList.length / this.itemsPerPage);
+          if (this.currentPage > totalPages) {
+            this.currentPage = totalPages || 1; // Ensure at least page 1
+          }
+
+          this.filterEmployees();
       }
 
       filterEmployees() {
-          const filter = this.employeeList.filter(emp => {
-              return emp.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+          const fitered = this.employeeList.filter(emp => {
+              return emp.name.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+              emp.department.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+              emp.salary.toLowerCase().includes(this.searchQuery.toLowerCase());
           })
-          this.filteredEmployees = filter;
+
+          this.filteredEmployees = fitered.slice(
+              (this.currentPage - 1) * this.itemsPerPage,
+              this.currentPage * this.itemsPerPage
+          )
+      }
+
+      get totalPages(): number[] {
+        let pageCount = Math.ceil(this.employeeList.length / this.itemsPerPage); // Ensure proper rounding
+        return Array.from({ length: pageCount }, (_, i) => i + 1); // Generate correct page numbers (starting from 1)
+      }
+      
+
+      changePage(page: number) {  
+        //console.log(this.currentPage);
+        this.currentPage = page;
+        this.filterEmployees();
       }
 }

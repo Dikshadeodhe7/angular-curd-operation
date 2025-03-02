@@ -26,11 +26,13 @@
 
      <h3>Employee List</h3>
      <div class="col-md-12">
-         <div class="col-6">
-             <input class="form-control search" type="text" [(ngModel)]="searchQuery" (input)="filterEmployees()" placeholder="Search employees..." >
-         </div>
-         <div class="col-6 total-emp">
-             <h3 class="text-right">Total Employees : {{ employeeList.length }}</h3>
+         <div class="col-12 d-flex mb-4">
+            <div class="col-6">
+                <input class="form-control search" type="text" [(ngModel)]="searchQuery" (input)="filterEmployees()" placeholder="Search employees..." >
+            </div>
+            <div class="col-6 total-emp">
+                <h4 class="text-right">Total Employees : {{ employeeList.length }}</h4>
+            </div>
          </div>
 
          <table class="table table-bordered">
@@ -45,7 +47,7 @@
              </thead>
              <tbody *ngIf="employeeList && employeeList.length > 0">
                  <tr *ngFor="let emp of filteredEmployees; let i = index">
-                     <td>{{ i + 1 }}</td>
+                    <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td> 
                      <td>{{ emp.name }}</td>
                      <td>{{ emp.department }}</td>
                      <td>{{ emp.salary }}</td>
@@ -61,6 +63,15 @@
                  </tr>
              </tfoot>
          </table>
-     </div>
- </div>
+
+         <div class="pagination" *ngIf="employeeList.length > itemsPerPage">
+            <button *ngFor="let page of totalPages" 
+                     (click)="changePage(page)" 
+                     [disabled]="currentPage === page">
+
+                    {{ page }}
+                    
+            </button>
+          </div>
+    </div>
 </div>
