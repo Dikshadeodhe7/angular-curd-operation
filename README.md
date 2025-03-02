@@ -1,1 +1,1 @@
-Angular CURD Operation
+Angular CURD Operation with Local Storage
